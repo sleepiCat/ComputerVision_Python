@@ -1,0 +1,1 @@
+script that generates a pdf bill for renters
