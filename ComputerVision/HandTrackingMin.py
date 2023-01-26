@@ -6,6 +6,8 @@ cap = cv2.VideoCapture(0)
 
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()
+
+#connects the finger joints with class drawing_utils
 mpDraw = mp.solutions.drawing_utils
 
 pTime = 0
@@ -20,14 +22,18 @@ while True:
     if results.multi_hand_landmarks:
         for handLms in results.multi_hand_landmarks:
             for id, lm in enumerate(handLms.landmark):
+                #lm: [x: val, y: val, z: val]
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 print(id, cx, cy)
+                #specific joint location is id
                 if id == 4:
                     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
 
+            #draw_landmarks method(img, each joint location, connections between joints)
             mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
+    #calculate fps
     cTime = time.time()
     fps = 1/(cTime - pTime)
     pTime = cTime
